@@ -87,13 +87,13 @@ else
 fi
 
 for attempt in {1..10}; do
-  if docker exec "$PROXY_NAME" wget -q -O /dev/null http://localhost/actuator/health; then
+  if docker exec "$PROXY_NAME" wget -q -O /dev/null http://127.0.0.1/actuator/health; then
     break
   fi
   sleep 1
 done
 
-if ! docker exec "$PROXY_NAME" wget -q -O /dev/null http://localhost/actuator/health; then
+if ! docker exec "$PROXY_NAME" wget -q -O /dev/null http://127.0.0.1/actuator/health; then
   echo "Proxy health check failed" >&2
   exit 1
 fi

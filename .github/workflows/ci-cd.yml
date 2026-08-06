@@ -5,6 +5,7 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -41,7 +42,7 @@ jobs:
   publish-image:
     name: Build and publish Docker image
     needs: verify
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: ${{ vars.DOCKERHUB_USERNAME }}/conf-cicd-spring-boot
@@ -70,7 +71,7 @@ jobs:
   deploy:
     name: Deploy to test VM
     needs: publish-image
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: ${{ vars.DOCKERHUB_USERNAME }}/conf-cicd-spring-boot
