@@ -84,7 +84,8 @@ jobs:
 
       - name: Skip deployment until VM secrets are configured
         if: env.VM_HOST == '' || env.VM_USER == '' || env.VM_SSH_KEY == ''
-        run: echo 'Deployment deferred: configure VM_HOST, VM_USER, and VM_SSH_KEY.' >> "$GITHUB_STEP_SUMMARY"
+        run: |
+          echo 'Deployment deferred: configure VM_HOST, VM_USER, and VM_SSH_KEY.' >> "$GITHUB_STEP_SUMMARY"
 
       - name: Configure SSH key
         if: env.VM_HOST != '' && env.VM_USER != '' && env.VM_SSH_KEY != ''
