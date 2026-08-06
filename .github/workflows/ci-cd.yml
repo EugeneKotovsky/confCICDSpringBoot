@@ -98,10 +98,9 @@ jobs:
       - name: Deploy blue-green release
         if: env.VM_HOST != '' && env.VM_USER != '' && env.VM_SSH_KEY != ''
         run: |
-          SSH_OPTIONS="-i ~/.ssh/id_ed25519 -p $VM_SSH_PORT -o StrictHostKeyChecking=accept-new"
-          ssh $SSH_OPTIONS "$VM_USER@$VM_HOST" 'mkdir -p ~/todo-cicd'
-          scp $SSH_OPTIONS deploy/deploy-blue-green.sh "$VM_USER@$VM_HOST:~/todo-cicd/deploy-blue-green.sh"
-          ssh $SSH_OPTIONS "$VM_USER@$VM_HOST" "chmod 700 ~/todo-cicd/deploy-blue-green.sh && IMAGE='$IMAGE_NAME' TAG='$GITHUB_SHA' bash ~/todo-cicd/deploy-blue-green.sh"
+          ssh -i ~/.ssh/id_ed25519 -p "$VM_SSH_PORT" -o StrictHostKeyChecking=accept-new "$VM_USER@$VM_HOST" 'mkdir -p ~/todo-cicd'
+          scp -i ~/.ssh/id_ed25519 -P "$VM_SSH_PORT" -o StrictHostKeyChecking=accept-new deploy/deploy-blue-green.sh "$VM_USER@$VM_HOST:~/todo-cicd/deploy-blue-green.sh"
+          ssh -i ~/.ssh/id_ed25519 -p "$VM_SSH_PORT" -o StrictHostKeyChecking=accept-new "$VM_USER@$VM_HOST" "chmod 700 ~/todo-cicd/deploy-blue-green.sh && IMAGE='$IMAGE_NAME' TAG='$GITHUB_SHA' bash ~/todo-cicd/deploy-blue-green.sh"
 
   notify:
     name: Publish result
